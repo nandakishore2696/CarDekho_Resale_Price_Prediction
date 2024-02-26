@@ -1,28 +1,17 @@
 import streamlit as st
 import pandas as pd 
 import pickle
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
-
 
 # Set wide layout
 st.set_page_config(layout="wide")
 
 # Load data
 df = pd.read_json('df.json')
+with open("ct.pkl", 'rb') as f:
+    ct = pickle.load(f)
+with open("cbr.pkl", 'rb') as f:
+    cbr = pickle.load(f)
 
-onehot_columns =['CITY' , 'FUEL' , 'TYPE' , 'TRANSMISSION' , 'INSURANCE']
-ordinal_col = ['OEM', 'MODEL', 'COLOR']
-
-ct = ColumnTransformer(transformers=[('onehot', OneHotEncoder(drop='first', sparse=False), onehot_columns ), ('ordinal', OrdinalEncoder(), ordinal_col)], remainder='passthrough')
-ct.set_output(transform='pandas')
-df1 = ct.fit_transform(df)
-
-from catboost import CatBoostRegressor
-
-cbr = CatBoostRegressor()
-
-cbr.fit(df1.drop('remainder__PRICE', axis=1),df1['remainder__PRICE'])
 
 st.markdown("""
     <style>
