@@ -10,10 +10,6 @@ st.set_page_config(layout="wide")
 
 # Load data
 df = pd.read_json('df.json')
-with open("ct.pkl", 'rb') as f:
-    ct = pickle.load(f)
-with open("cbr.pkl", 'rb') as f:
-    cbr = pickle.load(f)
 
 onehot_columns =['CITY' , 'FUEL' , 'TYPE' , 'TRANSMISSION' , 'INSURANCE']
 ordinal_col = ['OEM', 'MODEL', 'COLOR']
